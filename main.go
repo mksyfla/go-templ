@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	attributes := templates.Page()
+	attributes := templates.Attribute()
 	empty := templates.Empty()
 
 	mux := http.NewServeMux()
