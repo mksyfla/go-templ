@@ -1,0 +1,92 @@
+package templates
+
+templ constant() {
+  <p data-testid="paragraph">paragraph</p>
+  <br />
+}
+
+templ stringExpression(testId string) {
+  <p data-testid={ testId }>{ testId }</p>
+  <br />
+}
+
+type testIdType func(string) string
+
+func testIdFunc(testId string) string {
+  return testId
+}
+
+templ functionExpression(testId testIdType) {
+  <p data-testid={ testId("data-testid-123") }>{ testId("data-testid-123") }</p>
+  <br />
+}
+
+templ booleanExpression() {
+  // noshade attribute will set but with empty string
+  // <hr noshade="">
+  <hr noshade />
+
+  // noshade attribute will not set
+  // <hr>
+  <hr noshade?={ false } /> 
+  <br />
+}
+
+templ conditionalExpression() {
+  <hr style="padding: 10px"
+    if true {
+      height="10px"
+    }
+  />
+  <br />
+}
+
+templ spreadExpression(attrs templ.Attributes) {
+  <p { attrs... }>Text</p>
+  <hr { attrs... } />
+  <br />
+}
+
+templ urlExpression(url string, name string) {
+  <a href={ templ.URL(url) }>{ name }</a>
+  <br />
+}
+
+script JavaScriptParam(a string) {
+	alert(a);
+}
+
+templ JavaScriptExpression(text string) {
+	<button onClick={ JavaScriptParam("hello") } type="button">{ text }</button>
+  <br />
+}
+
+templ Page() {
+  <p>Constant Attributes</p>
+  @constant()
+  
+  <p>String Expression Attributes</p>
+  @stringExpression("data-testid-123")
+  
+  <p>Function Expression Attributes</p>
+  @functionExpression(testIdFunc)
+  
+  <p>Boolean Attributes</p>
+  @booleanExpression()
+  
+  <p>Conditional Attributes</p>
+  @conditionalExpression()
+  
+  <p>Spread Attributes</p>
+  @spreadExpression(templ.Attributes{"data-testId": "paragraph"})
+  
+  <p>URL Attributes</p>
+  @urlExpression("/404", "empty")
+
+  <p>JavaScript Attributes</p>
+  @JavaScriptExpression("alert")
+}
+
+templ Empty() {
+  <div>404</div>
+}
