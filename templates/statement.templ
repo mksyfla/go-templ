@@ -1,0 +1,52 @@
+package templates
+
+templ ifStatement(data bool) {
+  if data {
+    <p>input data is true</p>
+  } else {
+    <p>input data is false</p>
+  }
+  <br />
+}
+
+templ switchStatement(data string) {
+  switch data {
+    case "admin":
+      <p>{ data }</p>
+    case "user":
+      <p>{ data }</p>
+    default:
+      <p>Unknown</p>
+  }
+  <br />
+}
+
+func dataArray() []string {
+  return []string{"Halo", "Nama", "Saya", "Muhammad", "Kasyfil", "Aziz"}
+}
+
+templ forStatement(data []string) {
+  <ol>
+    for _, v := range data {
+      <li>{ v }</li>
+    }
+  </ol>
+  <br />
+}
+
+templ Statements() {
+  <p>If Statement (True)</p>
+  @ifStatement(true)
+  <p>If Statement (True)</p>
+  @ifStatement(false)
+  
+  <p>Switch Statement (admin)</p>
+  @switchStatement("admin")
+  <p>Switch Statement (user)</p>
+  @switchStatement("user")
+  <p>Switch Statement (else)</p>
+  @switchStatement("else")
+
+  <p>For Statement</p>
+  @forStatement(dataArray())
+}

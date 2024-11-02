@@ -1,0 +1,69 @@
+package templates
+
+import "fmt"
+
+templ pos(position string) {
+  <div>{position}</div>
+}
+
+templ importExpression() {
+  @pos("left")
+  @pos("middle")
+  @pos("right")
+  <br />
+}
+
+templ wrapChildren() {
+  <div id="wrapper">{ children... }</div>
+}
+
+templ childrenExpression() {
+  @wrapChildren() {
+    <div>Inserted at the top</div>
+  }
+  <br />
+}
+
+templ heading() {
+  <h1>Heading</h1>
+}
+
+templ ComponentParam(contents string) {
+	<p>{ contents }</p>
+}
+
+templ layout(contents templ.Component) {
+	<div id="heading">
+		@heading()
+	</div>
+	<div id="contents">
+		@contents
+	</div>
+  <br />
+}
+
+templ importComposition(data bool) {
+  if data {
+    <p>input data is { fmt.Sprintf("%t", data) }</p>
+  } else {
+    <p>input data is { fmt.Sprintf("%t", data) }</p>
+  }
+  <br />
+}
+
+templ Composition(contents templ.Component) {
+  <p>Import Expression</p>
+  @importExpression()
+
+  <p>Childer Expression</p>
+  @childrenExpression()
+  
+  <p>Component as Parameter</p>
+  @layout(contents)
+  
+  <p>Import components (if statement) (true)</p>
+  @importComposition(true)
+  
+  <p>Import components (if statement) (false)</p>
+  @importComposition(false)
+}

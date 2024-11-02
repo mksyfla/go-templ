@@ -1,0 +1,41 @@
+package templates
+
+templ literals() {
+  <div>{ "Sring Literals" }</div>
+  <br />
+}
+
+templ variables(prefix string) {
+  <div>{ prefix }</div>
+  <br />
+}
+
+type functionType func(string) string
+
+func functionFunc(data string) string {
+  return data
+}
+
+templ functions(data functionType) {
+  <div>{ data("Function Expression") }</div>
+  <br />
+}
+
+templ escaping() {
+  <div>{ `Function</div><div>Expression` }</div>
+  <br />
+}
+
+templ Expression() {
+  <p>Literals</p>
+  @literals()
+  
+  <p>Variables</p>
+  @variables("String Variable")
+  
+  <p>Functions</p>
+  @functions(functionFunc)
+  
+  <p>Escaping</p>
+  @escaping()
+}
