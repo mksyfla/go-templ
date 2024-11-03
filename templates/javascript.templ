@@ -1,0 +1,76 @@
+package templates
+
+templ body() {
+  <script type="text/javascript">
+    function handleClick(event) {
+      alert(event + 'clicked');
+    }
+  </script>
+  <button onclick="handleClick(this)">Click Me</button>
+  <br />
+}
+
+var helloHandle = templ.NewOnceHandle()
+var surrealHandle = templ.NewOnceHandle()
+
+templ hello(label, name string) {
+  @helloHandle.Once() {
+    <script type="text/javascript">
+      function hello(name) {
+        alert("Hello, " + name + "!")
+      }
+    </script>
+  }
+  @surrealHandle.Once() {
+    <script src="https://cdn.jsdelivr.net/gh/gnat/surreal@3b4572dd0938ce975225ee598a1e7381cb64ffd8/surreal.js"></script>
+  }
+
+  <div>
+    <input type="button" value={ label } data-name={ name }  />
+    <script type="text/javascript">
+      me("-").addEventListener('click', function () {
+        let name = this.getAttribute('data-name');
+        hello(name);
+      })
+    </script>
+  </div>
+  <br />
+}
+
+templ head() {
+	<head>
+		<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+	</head>
+}
+
+templ bodyImporting() {
+	<script>
+		const chart = LightweightCharts.createChart(document.body, { width: 400, height: 300 });
+		const lineSeries = chart.addLineSeries();
+		lineSeries.setData([
+			{ time: '2019-04-11', value: 80.01 },
+			{ time: '2019-04-12', value: 96.63 },
+			{ time: '2019-04-13', value: 76.64 },
+			{ time: '2019-04-14', value: 81.89 },
+			{ time: '2019-04-15', value: 74.43 },
+			{ time: '2019-04-16', value: 80.01 },
+			{ time: '2019-04-17', value: 96.63 },
+			{ time: '2019-04-18', value: 76.64 },
+			{ time: '2019-04-19', value: 81.89 },
+			{ time: '2019-04-20', value: 74.43 },
+		]);
+	</script>
+}
+
+templ Javascript() {
+  @head()
+
+  <p>Script Tags</p>
+  @body()
+  
+  <p>Client Side Behaviour</p>
+  @hello("Hello User", "user")
+
+  <p>Importing Script</p>
+  @bodyImporting()
+}

@@ -14,6 +14,7 @@ func main() {
 	statements := templates.Statements()
 	compositions := templates.Composition(templates.ComponentParam("Dynamic contents"))
 	button := templates.Button("Test", "test test")
+	javascript := templates.Javascript()
 
 	mux := http.NewServeMux()
 
@@ -31,6 +32,10 @@ func main() {
 
 	mux.HandleFunc("/comp", func(w http.ResponseWriter, r *http.Request) {
 		compositions.Render(r.Context(), w)
+	})
+
+	mux.HandleFunc("/js", func(w http.ResponseWriter, r *http.Request) {
+		javascript.Render(r.Context(), w)
 	})
 
 	mux.HandleFunc("/404", func(w http.ResponseWriter, r *http.Request) {
