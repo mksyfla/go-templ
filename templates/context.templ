@@ -1,0 +1,62 @@
+package templates
+
+import "context"
+
+templ firstProp(name string) {
+  <div>
+    @secondProp(name)
+  </div>
+}
+
+templ secondProp(name string) {
+  <ul>
+    @thirdProp(name)
+  </ul>
+}
+
+templ thirdProp(name string) {
+  <div>
+    <li>{ name }</li>
+  </div>
+}
+
+templ propDrilling() {
+  @firstProp("Kasyfil")
+  <br />
+}
+
+templ firstCtx() {
+  <div>
+    @secondCtx()
+  </div>
+}
+
+templ secondCtx() {
+  <ul>
+    @thirdCtx()
+  </ul>
+}
+
+templ thirdCtx() {
+  <div>
+    <li>{ getCtx(ctx) }</li>
+  </div>
+}
+
+func getCtx(ctx context.Context) string {
+  return ctx.Value("name").(string)
+}
+
+templ contextProp() {
+  @firstCtx()
+  <br />
+}
+
+templ ContextTempl() {
+  <p>Why we need context</p>
+  <p>Prop Drilling</p>
+  @propDrilling()
+  
+  <p>Context</p>
+  @contextProp()
+}

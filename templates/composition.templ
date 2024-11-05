@@ -28,7 +28,7 @@ templ heading() {
   <h1>Heading</h1>
 }
 
-templ ComponentParam(contents string) {
+templ componentParam(contents string) {
 	<p>{ contents }</p>
 }
 
@@ -51,7 +51,11 @@ templ importComposition(data bool) {
   <br />
 }
 
-templ Composition(contents templ.Component) {
+templ componentParameter(contents templ.Component) {
+  @layout(contents)
+}
+
+templ Composition() {
   <p>Import Expression</p>
   @importExpression()
 
@@ -59,7 +63,7 @@ templ Composition(contents templ.Component) {
   @childrenExpression()
   
   <p>Component as Parameter</p>
-  @layout(contents)
+  @componentParameter(componentParam("Dynamic contents"))
   
   <p>Import components (if statement) (true)</p>
   @importComposition(true)

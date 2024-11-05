@@ -1,5 +1,9 @@
 package templates
 
-templ Button(text string, className string) {
+templ button(text string, className string) {
 	<button class={ "button", className }>{ text }</button>
+}
+
+templ CssTempl() {
+	@button("Test", "test test")
 }

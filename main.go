@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"go-jwp-emading/templates"
 	"log"
 	"net/http"
@@ -12,9 +13,10 @@ func main() {
 	attributes := templates.Attribute()
 	expressions := templates.Expression()
 	statements := templates.Statements()
-	compositions := templates.Composition(templates.ComponentParam("Dynamic contents"))
-	button := templates.Button("Test", "test test")
+	compositions := templates.Composition()
+	button := templates.CssTempl()
 	javascript := templates.Javascript()
+	contextTempl := templates.ContextTempl()
 
 	mux := http.NewServeMux()
 
@@ -36,6 +38,11 @@ func main() {
 
 	mux.HandleFunc("/js", func(w http.ResponseWriter, r *http.Request) {
 		javascript.Render(r.Context(), w)
+	})
+
+	mux.HandleFunc("/ctx", func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), "name", "Kasyfil Context")
+		contextTempl.Render(ctx, w)
 	})
 
 	mux.HandleFunc("/404", func(w http.ResponseWriter, r *http.Request) {
