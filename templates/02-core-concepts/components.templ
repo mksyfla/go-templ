@@ -1,0 +1,52 @@
+package templates
+
+import (
+  "context"
+	"io"
+	"os"
+	"fmt"
+)
+
+templ headerTemplate(name string) {
+  <header data-testid="headerTemplate">
+    <h1>{ name }</h1>
+  </header>
+}
+
+func button(text string) templ.Component {
+  return templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
+    _, err := io.WriteString(w, "<p>Code Only Components</p>")
+    _, err = io.WriteString(w, "<button>" + text + "</button>")
+    _, err = io.WriteString(w, "<br />")
+    return err
+  })
+}
+
+type data struct {
+  message string
+}
+
+templ (d data) Method() {
+  <p>Method Components</p>
+  <div>{ d.message }</div>
+  <br />
+}
+
+templ message() {
+  <div>
+    @data{message: "or implement method type like this"}.Method()
+  </div>
+}
+
+func ComponentConcept() {
+  ctx := context.Background()
+  headerTemplate("Kasyfil")
+
+  button("click me").Render(ctx, os.Stdout)
+
+  fmt.Println()
+
+  d := data{ message: "method type component" }
+  d.Method().Render(ctx, os.Stdout)
+  message().Render(ctx, os.Stdout)
+}
